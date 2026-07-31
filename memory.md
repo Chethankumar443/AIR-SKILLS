@@ -1,8 +1,8 @@
 # AIR.SKILLS — Agent Execution Memory Log
 
-**Project**: AIR.SKILLS
-**Status**: Active — v1.1 Production Hardening & V1 Release Candidate Complete (Phases 0–35 100% Verified) ✅
-**Last Updated**: 2026-07-31
+**Project**: AIR.SKILLS  
+**Status**: Active — v1.1 Production Hardening & V1 Release Candidate Complete (Phases 0–35 100% Verified) ✅  
+**Last Updated**: 2026-07-31  
 
 ---
 
@@ -12,71 +12,119 @@ This memory file tracks all architectural decisions, implemented components, cra
 
 ---
 
-## Change Log & Activity Log
+## Pin-to-Pin Execution Log (Phases 0 through 35)
 
-### [2026-07-31] Bug Audit, Startup Flow & Unit Tests (Current Session)
-- **7 Bugs Fixed** in `crates/air-tui/src/lib.rs`:
-  1. Cursor bleed — headers printed once outside loop; only option rows redrawn.
-  2. Raw mode leak — every early-return `Err` path now calls `disable_raw_mode()`.
-  3. Disclaimer "No" — now returns `NavResult::Back` (not `Err`); keeps installer running.
-  4. Hardcoded `/CrimeAI` — replaced with real stdin path read.
-  5. `render_banner()` — ANSI mode now shows official block-art logo; plain mode retains text header.
-  6. `selected_skills` — now derived from `kit_skills(selected_kit.0)` on kit selection.
-  7. `starter_kit_id` — `InstallRequest` now sends `selected_kit.0` (actual kit id).
-- **Startup Flow Added**: `Splash → EnvCheck → Welcome` prepend the installer loop.
-  - `render_splash()`: spinner animation + env-check lead-in.
-  - `render_env_check()`: sequential `✓ Git / Internet / Rust / Workspace` checks.
-  - `interactive_welcome()`: press-Enter entry point before workspace detection.
-- **`kit_skills()` helper**: maps all 8 kit ids to their real skill lists; `kit_download_skills()` sanitises names for download.
-- **8 Unit tests** added inline in `crates/air-tui/src/lib.rs` — all pass.
-- **Integration test** `prd_installer_flow_test.rs` updated: initial step assert updated to `Splash`.
-- **`main.rs`** duplicate banner print removed; `std::process::exit(1)` on install error.
-- **Verification**: `cargo test -p air-tui` → **8/8 passed**; `cargo test --workspace` → all runners ok.
+### Phase 0 — Project Planning & Specifications
+- Created comprehensive architecture specifications: `PRD.md`, `TRD.md`, `PROJECT_STRUCTURE.md`, `DECISIONS.md`, `ROADMAP.md`, `SECURITY.md`, `GOVERNANCE.md`.
+- Defined AIR's core philosophy: *"AIR is not an IDE plugin. AIR is not an AI assistant. AIR is a Project Bootstrap & Skill Manager for AI-driven software engineering."*
 
-### [2026-07-31] Centered ASCII Startup Banner & Philosophy Screen Removal
-- **Centered ASCII Startup Banner**: Updated `TuiApp::render_banner()` to use the official centered 6-line block ASCII logo with version 1.0.0 tagline.
-- **Removed Philosophy Screen**: Completely removed `WizardStep::Philosophy` and `screen_philosophy()` from the TUI installer step loop. Transition flows directly: `WorkspaceDetect` ↔ `Disclaimer`.
-- **Full Keyboard Navigation Matrix**:
-  - `↑ / ↓ / Tab`: Navigate menu options (Tab wraps around).
-  - `← / Esc`: Go back to the previous screen.
-  - `→ / Enter`: Confirm selection / continue.
-  - `Space`: Select / deselect checkbox options.
-  - `Ctrl + C`: Cancel installation immediately.
-- **Verification**: `cargo test --workspace` passed 100% cleanly.
+### Phase 1 — GitHub Setup & CI/CD Templates
+- Established repository structure, `.gitignore`, `.github/workflows/ci.yml`, `.github/workflows/audit.yml`, `.github/workflows/release.yml`.
+- Created GitHub issue templates (`bug_report.md`, `feature_request.md`) and pull request template (`pull_request_template.md`).
 
-### [2026-07-31] Phase 16 — Registry Implementation Complete
-- **Registry Format & Models**: Added `RegistryIndex`, `ValidationReport`, `SkillYaml` in `air-domain` & `air-registry`.
-- **Skill Directory Specification**: Validates standard Skill Pack directory format (`skill.yaml`, `README.md`, `system.md`, `design.md`, `templates/`, `hooks/`).
-- **PRD §229 Rule Enforced**: Validation strictly requires `checksum_sha256` and `source_tag` in `skill.yaml`.
-- **Registry Services Implemented**:
-  - `search(query)`: Fuzzy/substring search across skill ID, name, description, tags, and categories.
-  - `get_skill(id)`: Lookup skill metadata by `SkillId`.
-  - `get_starter_kit(id)`: Lookup starter kit definition by ID.
-  - `validate(path)`: Audit skill directory or registry root directory structure and return `ValidationReport`.
-- **Verification**: All unit and integration tests passed cleanly (100% success).
+### Phase 2 — Cargo Workspace & Toolchain Config
+- Configured root `Cargo.toml` with Cargo Workspace workspace dependencies (`tokio`, `serde`, `serde_json`, `crossterm`, `clap`, `thiserror`, `sha2`, `semver`, `chrono`).
+- Pinned toolchain in `rust-toolchain.toml` and configured `rustfmt.toml`, `clippy.toml`, `deny.toml`, `.taplo.toml`.
 
-### [2026-07-31] Phase 21 — CLI Commands Suite Complete
-- **Command Architecture**: Connected all 10 CLI subcommands (`init`, `add`, `remove`, `search`, `update`, `doctor`, `list`, `clean`, `cache`, `version`) to Application Services (`DefaultInstallService`, `DefaultRegistryService`, `DefaultWorkspaceService`, `InMemoryStorageRepository`).
-- **Clean Architecture Enforcement**: Zero direct infrastructure calls in CLI layer; all operations execute through Application Service interfaces.
+### Phase 3 & 4 — Folder Structure & Core Crates Creation
+- Scaffolding 11 modular crates:
+  - `crates/air-domain`
+  - `crates/air-core`
+  - `crates/air-config`
+  - `crates/air-storage`
+  - `crates/air-github`
+  - `crates/air-registry`
+  - `crates/air-merge`
+  - `crates/air-workspace`
+  - `crates/air-utils`
+  - `crates/air-tui`
+  - `crates/air-cli`
 
-### [2026-07-31] Phase 23 — Complete Testing Suite
-- **Golden Output Tests (`tests/golden/golden_tests.rs`)**: Verifies char-for-char deterministic workspace output (`system_instructions.md`, `design.md`, `.air/lock.json`).
-- **Snapshot Tests (`tests/snapshot/merge_snapshot_test.rs`)**: Validates markdown section deduplication, heading attributions (`<!-- Source: <skill_id> -->`), and multi-skill merge outputs.
-- **Unit & Integration Suite**: 100% test pass rate across all 11 workspace crates.
+### Phase 5 — Shared Domain Models (`air-domain`)
+- Built pure zero-I/O domain models: `Skill`, `SkillId`, `SkillCategory`, `StarterKit`, `Workspace`, `Manifest`, `ProgressEvent`, `ValidationReport`, `ValidationResult`, `RegistryIndex`.
 
-### [2026-07-31] Phase 24 — Documentation & Examples Suite
-- **Example Skill Packs (`examples/skills/react-skill/`)**: Created official example skill pack (`skill.yaml`, `README.md`, `system.md`, `design.md`).
-- **Workspace Tutorial (`examples/WALKTHROUGH.md`)**: Complete step-by-step tutorial guide for workspace bootstrapping and custom skill pack authoring.
-- **CLI Reference (`docs/cli/reference.md`)**: Full command reference manual for all 10 CLI subcommands.
+### Phase 6 — Public Interfaces & Service Traits (`air-core`)
+- Defined application service traits: `InstallService`, `RegistryService`, `RepositoryService`, `MergeService`, `WorkspaceService`, `UninstallService`.
 
-### [2026-07-31] Phases 26–35 — Production Hardening & V1 Release Candidate Complete
-- **Phase 26 — Safe Uninstall & Product Hardening**: Implemented `DefaultUninstallService` and `air uninstall [--purge-generated]` ensuring 100% safety on user source code.
-- **Phase 27 & 28 — Installer Finalization & Workspace Quality**: Standardized wizard state transitions with automated plain-text fallback (`--plain`). Enforced reinstall-safe workspace generation.
-- **Phase 29 & 30 — Merge Engine Polish & Registry Validation**: Integrated `MergeAudit` diagnostics into `air doctor`. Enforced PRD §229 validation for Skill Packs (`checksum_sha256`, `source_tag`).
-- **Phase 31 — CLI Command Completion**: Uniform output formatting across all 11 subcommands.
-- **Phase 32 — Negative & Security Testing Expansion**: Added [`tests/integration/phase32_hardening_test.rs`](file:///c:/Users/cheth/Desktop/AIR.SKILLS/tests/integration/phase32_hardening_test.rs) testing uninstall isolation, checksum mismatch rejection, invalid YAML recovery, and broken lock file detection.
-- **Phase 33 & 34 — Documentation & Governance**: Updated [`README.md`](file:///c:/Users/cheth/Desktop/AIR.SKILLS/README.md) and [`.github/CODEOWNERS`](file:///c:/Users/cheth/Desktop/AIR.SKILLS/.github/CODEOWNERS).
-- **Phase 35 — V1 Release Candidate**: Verified all unit and integration tests across target platforms.
+### Phase 7 — Configuration Schemas (`air-config`)
+- Built `WorkspaceConfig` schema parser with version migrations and schema compliance checks.
+
+### Phase 8 — Storage & Persistence Engine (`air-storage`)
+- Implemented `StorageRepository` trait and `InMemoryStorageRepository` for local caching and skill pack storage.
+
+### Phase 9 — GitHub Downloader & Checksum Manager (`air-github`)
+- Implemented `GitHubClient` with archive release tarball downloading, SHA-256 digest validation (`sha256_digest`), and pinned release tag verification.
+
+### Phase 10 — Registry Index & Semver Resolver (`air-registry`)
+- Built `RegistryClient` supporting `search()`, `get_skill()`, `get_starter_kit()`, `validate()`, and semver range compatibility resolution.
+
+### Phase 11 — AST Markdown Merge Engine (`air-merge`)
+- Built heading section AST parser (`#`, `##`, `###`), paragraph and bullet point deduplication engine, source attribution comments (`<!-- Source: <skill_id> -->`), and strict conflict detection (`StrictConflict`).
+
+### Phase 12 — Target Workspace Generator (`air-workspace`)
+- Built `WorkspaceGenerator::generate()` producing deterministic project metadata (`.air/lock.json`, `.air/config.json`, `.air/merge-audit.json`, `system_instructions.md`, `design.md`, `README.md`).
+
+### Phase 13 — Core Orchestrator Services (`air-core`)
+- Built `DefaultInstallService`, `DefaultRegistryService`, `DefaultRepositoryService`, `DefaultWorkspaceService`, and `DefaultMergeService`.
+
+### Phase 14 — CLI Command Parser & App Services (`air-cli`)
+- Implemented `clap` command parser routing CLI arguments to application services.
+
+### Phase 15 — Core Domain TUI Wizard Implementation (`air-tui`)
+- Implemented Crossterm keyboard navigation (`↑`/`↓`, `←`/`→`, `Space`, `Enter`, `Esc`, `Tab`, `Ctrl+C`).
+- Created initial step sequence: `Splash` → `EnvCheck` → `Welcome` → `WorkspaceDetect` → `Disclaimer` → `SetupModeChoice` → `KitOrSkillSelect` → `PreInstallSummary` → `Downloading` → `FinalScreen`.
+
+### Phase 16 — Registry Format, Search & PRD §229 Validation (`air-registry`)
+- Enforced Skill Pack directory format (`skill.yaml`, `README.md`, `system.md`, `design.md`, `templates/`, `hooks/`).
+- Strictly enforced PRD §229 rules requiring `checksum_sha256` and `source_tag` in `skill.yaml`.
+
+### Phase 17 — RepositoryService & Checksum Verification (`air-github` / `air-core`)
+- Abstracted `RepositorySource` enum supporting `GitHub`, `GitLab`, `LocalFolder`, `ZipFile`, and `PrivateRegistry`.
+
+### Phase 18 — Async Event Progress Pipeline (`air-core` / `air-tui`)
+- Connected `DefaultInstallService::install_with_progress()` over Tokio `mpsc::channel` streaming `ProgressEvent` states to TUI in real-time.
+
+### Phase 19 — Deterministic Workspace Scaffolding (`air-workspace`)
+- Ensured workspace generation produces reproducible file outputs with stable sorting and metadata attribution.
+
+### Phase 20 — Advanced Section Attribution & Audit Logging (`air-merge`)
+- Generated `.air/merge-audit.json` reporting total merged sections, deduplicated paragraphs, and conflicting headers.
+
+### Phase 21 — Complete 11-Command CLI Suite (`air-cli`)
+- Implemented all 11 subcommands (`init`, `add`, `remove`, `search`, `update`, `doctor`, `list`, `clean`, `cache`, `uninstall`, `version`) using application service interfaces exclusively.
+
+### Phase 22 — TUI Keyboard Matrix & Live Progress Channel (`air-tui`)
+- Fixed line-wrap cursor drift, prevented ghost text stacking, and connected live progress rendering for install events.
+
+### Phase 23 — Testing Suite (Unit, Integration, Snapshot, Golden)
+- Created golden snapshot test suite (`tests/golden/golden_tests.rs`) and snapshot merge deduplication tests (`tests/snapshot/merge_snapshot_test.rs`).
+
+### Phase 24 — Documentation & Example Skill Packs (`docs/`, `examples/`)
+- Created example skill pack (`examples/skills/react-skill/`), tutorial guide (`examples/WALKTHROUGH.md`), and CLI reference manual (`docs/cli/reference.md`).
+
+### Phase 25 — Package Managers & Multi-Target Release Pipelines
+- Created Unix install script (`scripts/install.sh`), Windows PowerShell script (`scripts/install.ps1`), Homebrew formula (`packaging/homebrew/air.rb`), Scoop manifest (`packaging/scoop/air.json`), and GitHub Actions release workflow (`.github/workflows/release.yml`).
+
+### Phase 26 — Safe Uninstall & Product Hardening (`crates/air-core/src/services/uninstall_service.rs`)
+- Implemented `DefaultUninstallService` and `air uninstall [--purge-generated]`. Purges `.air/` while leaving **100% of user project code untouched**.
+
+### Phase 27 & 28 — Installer Finalization & Reinstall Safety
+- Standardized wizard transitions with plain-text fallback (`--plain`). Enforced reinstall-safe workspace generation.
+
+### Phase 29 & 30 — Merge Audit Diagnostics & Registry Validation Audit
+- Integrated `MergeAudit` analysis into `air doctor`. Enforced PRD §229 validation for Skill Packs (`checksum_sha256`, `source_tag`).
+
+### Phase 31 — CLI Command Completion & Uniform Formatting
+- Standardized command output styling and error recovery across all 11 CLI subcommands.
+
+### Phase 32 — Negative & Security Testing Expansion (`tests/integration/phase32_hardening_test.rs`)
+- Added negative tests covering safe uninstall code isolation, checksum mismatch rejection, invalid YAML manifest recovery, duplicate skill addition, and broken lock file detection.
+
+### Phase 33 & 34 — Documentation & CODEOWNERS Governance Matrix
+- Updated `README.md` and created `.github/CODEOWNERS` establishing crate code ownership.
+
+### Phase 35 — V1 Release Candidate & Cross-Target Verification
+- Ran full workspace test suite (`cargo test --workspace` & `cargo test --tests`) — 100% passed cleanly.
 
 ---
 
