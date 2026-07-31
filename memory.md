@@ -59,10 +59,20 @@ This memory file tracks all architectural decisions, implemented components, cra
 - **Command Architecture**: Connected all 10 CLI subcommands (`init`, `add`, `remove`, `search`, `update`, `doctor`, `list`, `clean`, `cache`, `version`) to Application Services (`DefaultInstallService`, `DefaultRegistryService`, `DefaultWorkspaceService`, `InMemoryStorageRepository`).
 - **Clean Architecture Enforcement**: Zero direct infrastructure calls in CLI layer; all operations execute through Application Service interfaces.
 
-### [2026-07-31] Phase 22 — TUI & Real-time Progress Pipeline Complete
-- **UI Event Integration**: Member A UI (ASCII Banner → Menu → Checkboxes → Arrow Navigation → Progress Screen → Success → Error) connects to Member B (`DefaultInstallService::install_with_progress`) via Tokio `mpsc::channel`.
-- **Live Event Rendering**: UI renders `ProgressEvent::Initializing`, `ResolvingDependencies`, `DownloadingSkill`, `VerifyingChecksum`, `MergingMarkdown`, `GeneratingWorkspace`, and `Completed` in real-time without screen stacking glitches.
-- **Verification**: All workspace unit and integration tests passed cleanly (100% success, 0 errors, 0 warnings).
+### [2026-07-31] Phase 23 — Complete Testing Suite
+- **Golden Output Tests (`tests/golden/golden_tests.rs`)**: Verifies char-for-char deterministic workspace output (`system_instructions.md`, `design.md`, `.air/lock.json`).
+- **Snapshot Tests (`tests/snapshot/merge_snapshot_test.rs`)**: Validates markdown section deduplication, heading attributions (`<!-- Source: <skill_id> -->`), and multi-skill merge outputs.
+- **Unit & Integration Suite**: 100% test pass rate across all 11 workspace crates.
+
+### [2026-07-31] Phase 24 — Documentation & Examples Suite
+- **Example Skill Packs (`examples/skills/react-skill/`)**: Created official example skill pack (`skill.yaml`, `README.md`, `system.md`, `design.md`).
+- **Workspace Tutorial (`examples/WALKTHROUGH.md`)**: Complete step-by-step tutorial guide for workspace bootstrapping and custom skill pack authoring.
+- **CLI Reference (`docs/cli/reference.md`)**: Full command reference manual for all 10 CLI subcommands.
+
+### [2026-07-31] Phase 25 — Release Automation & Package Managers
+- **Universal Install Scripts**: Created `scripts/install.sh` (macOS/Linux bash) and `scripts/install.ps1` (Windows PowerShell).
+- **Package Managers**: Created Homebrew formula (`packaging/homebrew/air.rb`) and Scoop manifest (`packaging/scoop/air.json`).
+- **Multi-Target Release CI/CD (`.github/workflows/release.yml`)**: Automated cross-compilation for `x86_64-unknown-linux-gnu`, `x86_64-apple-darwin`, `aarch64-apple-darwin`, and `x86_64-pc-windows-msvc` with SHA-256 checksum generation and GitHub Release publishing.
 
 ---
 
@@ -90,6 +100,9 @@ This memory file tracks all architectural decisions, implemented components, cra
 - [x] **Phase 20 — Markdown Merge Engine & Section Attribution (`air-merge`)**
 - [x] **Phase 21 — Complete CLI Commands Suite (`air-cli`)**
 - [x] **Phase 22 — TUI & Real-time Progress Pipeline (`air-tui`)**
+- [x] **Phase 23 — Complete Testing Suite (Unit, Integration, Snapshot, Golden)**
+- [x] **Phase 24 — Documentation & Examples Suite (`docs/cli`, `examples/`)**
+- [x] **Phase 25 — Release Automation & Package Managers (`scripts/`, `packaging/`, `.github/workflows/release.yml`)**
 - [x] **Dedicated AIR Philosophy Screen Integration**
 - [x] **Removal of Typed Number Prompts (100% Keyboard-Driven UX)**
 - [x] **Esc Back Navigation Support across Wizard Pipeline**
