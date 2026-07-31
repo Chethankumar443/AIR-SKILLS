@@ -1,0 +1,21 @@
+{
+    "version": "1.0.0",
+    "description": "AI Project Bootstrap & Skill Manager",
+    "homepage": "https://github.com/Chethankumar443/AIR-SKILLS",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/Chethankumar443/AIR-SKILLS/releases/download/v1.0.0/air-x86_64-pc-windows-msvc.zip",
+            "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+    },
+    "bin": "air.exe",
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Chethankumar443/AIR-SKILLS/releases/download/v$version/air-x86_64-pc-windows-msvc.zip"
+            }
+        }
+    }
+}

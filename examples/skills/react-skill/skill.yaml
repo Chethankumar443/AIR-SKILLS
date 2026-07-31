@@ -1,0 +1,15 @@
+id: react-skill
+name: Modern React Skill Pack
+version: 1.0.0
+description: Official AIR.SKILLS pack for React + Tailwind CSS + TypeScript applications
+category: Frontend
+source_tag: v1.0.0
+checksum_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tags:
+  - react
+  - frontend
+  - typescript
+  - tailwind
+compatible_with:
+  - skill_id: typescript
+    range: ">=5.0.0"
