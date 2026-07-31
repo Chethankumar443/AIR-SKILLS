@@ -1,7 +1,7 @@
 # AIR.SKILLS — Agent Execution Memory Log
 
 **Project**: AIR.SKILLS
-**Status**: Active — Full Startup Flow (Splash → EnvCheck → Welcome) + 7 Bug Fixes + 8 Unit Tests ✅
+**Status**: Active — v1.1 Production Hardening & V1 Release Candidate Complete (Phases 0–35 100% Verified) ✅
 **Last Updated**: 2026-07-31
 
 ---
