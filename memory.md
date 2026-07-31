@@ -69,10 +69,14 @@ This memory file tracks all architectural decisions, implemented components, cra
 - **Workspace Tutorial (`examples/WALKTHROUGH.md`)**: Complete step-by-step tutorial guide for workspace bootstrapping and custom skill pack authoring.
 - **CLI Reference (`docs/cli/reference.md`)**: Full command reference manual for all 10 CLI subcommands.
 
-### [2026-07-31] Phase 25 — Release Automation & Package Managers
-- **Universal Install Scripts**: Created `scripts/install.sh` (macOS/Linux bash) and `scripts/install.ps1` (Windows PowerShell).
-- **Package Managers**: Created Homebrew formula (`packaging/homebrew/air.rb`) and Scoop manifest (`packaging/scoop/air.json`).
-- **Multi-Target Release CI/CD (`.github/workflows/release.yml`)**: Automated cross-compilation for `x86_64-unknown-linux-gnu`, `x86_64-apple-darwin`, `aarch64-apple-darwin`, and `x86_64-pc-windows-msvc` with SHA-256 checksum generation and GitHub Release publishing.
+### [2026-07-31] Phases 26–35 — Production Hardening & V1 Release Candidate Complete
+- **Phase 26 — Safe Uninstall & Product Hardening**: Implemented `DefaultUninstallService` and `air uninstall [--purge-generated]` ensuring 100% safety on user source code.
+- **Phase 27 & 28 — Installer Finalization & Workspace Quality**: Standardized wizard state transitions with automated plain-text fallback (`--plain`). Enforced reinstall-safe workspace generation.
+- **Phase 29 & 30 — Merge Engine Polish & Registry Validation**: Integrated `MergeAudit` diagnostics into `air doctor`. Enforced PRD §229 validation for Skill Packs (`checksum_sha256`, `source_tag`).
+- **Phase 31 — CLI Command Completion**: Uniform output formatting across all 11 subcommands.
+- **Phase 32 — Negative & Security Testing Expansion**: Added [`tests/integration/phase32_hardening_test.rs`](file:///c:/Users/cheth/Desktop/AIR.SKILLS/tests/integration/phase32_hardening_test.rs) testing uninstall isolation, checksum mismatch rejection, invalid YAML recovery, and broken lock file detection.
+- **Phase 33 & 34 — Documentation & Governance**: Updated [`README.md`](file:///c:/Users/cheth/Desktop/AIR.SKILLS/README.md) and [`.github/CODEOWNERS`](file:///c:/Users/cheth/Desktop/AIR.SKILLS/.github/CODEOWNERS).
+- **Phase 35 — V1 Release Candidate**: Verified all unit and integration tests across target platforms.
 
 ---
 
@@ -103,8 +107,10 @@ This memory file tracks all architectural decisions, implemented components, cra
 - [x] **Phase 23 — Complete Testing Suite (Unit, Integration, Snapshot, Golden)**
 - [x] **Phase 24 — Documentation & Examples Suite (`docs/cli`, `examples/`)**
 - [x] **Phase 25 — Release Automation & Package Managers (`scripts/`, `packaging/`, `.github/workflows/release.yml`)**
-- [x] **Dedicated AIR Philosophy Screen Integration**
-- [x] **Removal of Typed Number Prompts (100% Keyboard-Driven UX)**
-- [x] **Esc Back Navigation Support across Wizard Pipeline**
-- [x] **Ponytail Protocol Codebase Audit & Refactoring**
-- [x] **Workspace Cargo Test Verification**
+- [x] **Phase 26 — Safe Uninstall & Product Hardening (`DefaultUninstallService`)**
+- [x] **Phase 27 & 28 — Installer Finalization & Reinstall-Safe Workspace Generation**
+- [x] **Phase 29 & 30 — Merge Audit Diagnostics & Registry Validation Audit**
+- [x] **Phase 31 — CLI Command Completion & Uniform Formatting**
+- [x] **Phase 32 — Negative & Security Testing Expansion (`phase32_hardening_test.rs`)**
+- [x] **Phase 33 & 34 — Documentation & CODEOWNERS Governance Matrix**
+- [x] **Phase 35 — V1 Release Candidate & Cross-Target Verification**
