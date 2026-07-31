@@ -1,0 +1,28 @@
+# Rust / Cargo
+/target/
+**/*.rs.bk
+Cargo.lock
+
+# AIR Runtime & Local Output
+/.air/
+/merged/
+
+# OS Artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment Files & Credentials
+.env
+.env.*
+!.env.local.template
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Temporary Files
+tmp/
+*.log

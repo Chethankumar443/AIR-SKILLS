@@ -1,0 +1,61 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/air-cli",
+    "crates/air-tui",
+    "crates/air-core",
+    "crates/air-domain",
+    "crates/air-config",
+    "crates/air-storage",
+    "crates/air-github",
+    "crates/air-registry",
+    "crates/air-merge",
+    "crates/air-workspace",
+    "crates/air-utils",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.80"
+authors = ["AIR.SKILLS Maintainers <maintainers@airskills.dev>"]
+license = "MIT"
+repository = "https://github.com/AIR-SKILLS/air-skills"
+homepage = "https://github.com/AIR-SKILLS/air-skills"
+
+[workspace.dependencies]
+# Internal workspace crates
+air-cli = { path = "crates/air-cli", version = "0.1.0" }
+air-tui = { path = "crates/air-tui", version = "0.1.0" }
+air-core = { path = "crates/air-core", version = "0.1.0" }
+air-domain = { path = "crates/air-domain", version = "0.1.0" }
+air-config = { path = "crates/air-config", version = "0.1.0" }
+air-storage = { path = "crates/air-storage", version = "0.1.0" }
+air-github = { path = "crates/air-github", version = "0.1.0" }
+air-registry = { path = "crates/air-registry", version = "0.1.0" }
+air-merge = { path = "crates/air-merge", version = "0.1.0" }
+air-workspace = { path = "crates/air-workspace", version = "0.1.0" }
+air-utils = { path = "crates/air-utils", version = "0.1.0" }
+
+# Third-party dependencies
+anyhow = "1.0"
+thiserror = "1.0"
+tokio = { version = "1.38", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.8"
+semver = { version = "1.0", features = ["serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+clap = { version = "=4.5.31", features = ["derive", "env"] }
+ratatui = "0.27"
+crossterm = "0.27"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+sha2 = "0.10"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

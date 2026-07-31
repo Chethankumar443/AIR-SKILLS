@@ -1,0 +1,20 @@
+[package]
+name = "air-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[[bin]]
+name = "air"
+path = "src/main.rs"
+
+[dependencies]
+air-core.workspace = true
+air-domain.workspace = true
+air-storage.workspace = true
+air-tui.workspace = true
+air-utils.workspace = true
+clap.workspace = true
+serde_json.workspace = true
+tokio.workspace = true

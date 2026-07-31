@@ -1,0 +1,15 @@
+# Codeowners for AIR.SKILLS
+
+* @AIR-SKILLS/maintainers
+
+# Core architecture and pure domain models
+/crates/air-core/ @AIR-SKILLS/core-lead
+/crates/air-domain/ @AIR-SKILLS/core-lead
+
+# Security and networking
+/crates/air-github/ @AIR-SKILLS/security-lead
+/crates/air-utils/ @AIR-SKILLS/security-lead
+
+# UI and CLI
+/crates/air-tui/ @AIR-SKILLS/dx-lead
+/crates/air-cli/ @AIR-SKILLS/dx-lead

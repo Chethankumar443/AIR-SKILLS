@@ -1,0 +1,7 @@
+use tracing_subscriber::{fmt, EnvFilter};
+
+/// Initializes logging subscriber with environment filter (defaulting to INFO)
+pub fn init_logging() {
+    let filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info"));
+    let _ = fmt().with_env_filter(filter).with_target(false).try_init();
+}

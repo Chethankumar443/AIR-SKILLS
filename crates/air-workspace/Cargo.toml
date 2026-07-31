@@ -1,0 +1,16 @@
+[package]
+name = "air-workspace"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[dependencies]
+air-config.workspace = true
+air-domain.workspace = true
+air-merge.workspace = true
+air-utils.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+chrono.workspace = true
+semver.workspace = true
