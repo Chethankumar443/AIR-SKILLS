@@ -1,6 +1,6 @@
 use air_core::{
-    DefaultInstallService, DefaultRegistryService, DefaultWorkspaceService, InstallRequest,
-    InstallService, WorkspaceService,
+    DefaultInstallService, DefaultRegistryService, DefaultUninstallService, DefaultWorkspaceService,
+    InstallRequest, InstallService, UninstallService, WorkspaceService,
 };
 use air_domain::{SkillId, Manifest};
 use air_storage::{InMemoryStorageRepository, StorageRepository};
@@ -62,6 +62,11 @@ enum Commands {
     Cache {
         #[command(subcommand)]
         command: Option<CacheCommands>,
+    },
+    /// Safely remove AIR metadata from current workspace
+    Uninstall {
+        #[arg(long = "purge-generated", help = "Purge generated markdown files (system_instructions.md, design.md)")]
+        purge_generated: bool,
     },
     /// Output AIR version and workspace information
     Version,
@@ -252,6 +257,19 @@ async fn main() {
                     for warn in result.warnings {
                         println!("      ! Warning: {}", warn);
                     }
+
+                    // Check for merge audit log
+                    let audit_path = Path::new(".air/merge-audit.json");
+                    if audit_path.exists() {
+                        if let Ok(audit_content) = fs::read_to_string(audit_path) {
+                            if let Ok(audit_json) = serde_json::from_str::<serde_json::Value>(&audit_content) {
+                                println!("  ✓  Merge Audit Log      : Valid (.air/merge-audit.json)");
+                                if let Some(merged_count) = audit_json.get("total_sections_merged") {
+                                    println!("      - Total Merged Sections: {}", merged_count);
+                                }
+                            }
+                        }
+                    }
                 }
                 Err(e) => eprintln!("Doctor check failed: {}", e),
             }
@@ -275,6 +293,20 @@ async fn main() {
                     println!("  Cache Directory : ~/.air/cache/");
                     println!("  Cached Items    : 0 (In-Memory Repository Active)");
                 }
+            }
+        }
+        Some(Commands::Uninstall { purge_generated }) => {
+            let service = DefaultUninstallService::new();
+            match service.uninstall(".", purge_generated) {
+                Ok(res) => {
+                    println!("─────────────────────────────────────────────────────────────────────────────");
+                    println!("                     AIR.SKILLS Safe Uninstall");
+                    println!("─────────────────────────────────────────────────────────────────────────────");
+                    println!(" {}", res.message);
+                    println!(" Note: User source code files were left 100% untouched.");
+                    println!("─────────────────────────────────────────────────────────────────────────────");
+                }
+                Err(e) => eprintln!("Uninstall failed: {}", e),
             }
         }
         Some(Commands::Version) => {

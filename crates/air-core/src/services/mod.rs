@@ -2,6 +2,7 @@ pub mod install_service;
 pub mod merge_service;
 pub mod registry_service;
 pub mod repository_service;
+pub mod uninstall_service;
 pub mod workspace_service;
 
 use air_domain::{InstallPlan, Skill, SkillId, ValidationResult, WorkspaceResult};
@@ -42,4 +43,5 @@ pub use install_service::DefaultInstallService;
 pub use merge_service::DefaultMergeService;
 pub use registry_service::DefaultRegistryService;
 pub use repository_service::DefaultRepositoryService;
+pub use uninstall_service::{DefaultUninstallService, UninstallResult, UninstallService};
 pub use workspace_service::DefaultWorkspaceService;

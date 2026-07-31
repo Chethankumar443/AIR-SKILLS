@@ -1,15 +1,29 @@
-# Codeowners for AIR.SKILLS
+# AIR.SKILLS Code Ownership Matrix
 
-* @AIR-SKILLS/maintainers
+# Global Repository Maintainers
+*       @Chethankumar443
 
-# Core architecture and pure domain models
-/crates/air-core/ @AIR-SKILLS/core-lead
-/crates/air-domain/ @AIR-SKILLS/core-lead
+# Core Architecture & Application Services
+/crates/air-core/        @Chethankumar443
+/crates/air-domain/      @Chethankumar443
+/crates/air-utils/       @Chethankumar443
 
-# Security and networking
-/crates/air-github/ @AIR-SKILLS/security-lead
-/crates/air-utils/ @AIR-SKILLS/security-lead
+# Terminal UI & Keyboard Engine
+/crates/air-tui/         @Chethankumar443
 
-# UI and CLI
-/crates/air-tui/ @AIR-SKILLS/dx-lead
-/crates/air-cli/ @AIR-SKILLS/dx-lead
+# CLI Commands & Entrypoint
+/crates/air-cli/         @Chethankumar443
+
+# Registry, GitHub Downloader & Merge Engine
+/crates/air-registry/    @Chethankumar443
+/crates/air-github/      @Chethankumar443
+/crates/air-merge/       @Chethankumar443
+/crates/air-workspace/   @Chethankumar443
+/crates/air-storage/     @Chethankumar443
+
+# Documentation & Package Managers
+/docs/                   @Chethankumar443
+/examples/               @Chethankumar443
+/packaging/              @Chethankumar443
+/scripts/                @Chethankumar443
+/.github/                @Chethankumar443
